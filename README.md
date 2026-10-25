@@ -3,7 +3,8 @@
 A chat spam filter for **World of Warcraft 3.3.5a** (Wrath of the Lich King).
 
 QuietChat hides gold sellers, boost ads, recruitment spam and copy-pasted messages from
-channels, /say and /yell, without hiding anything from your friends, guild or group.
+channels, /say and /yell, and leaves your friends, guild and group alone unless you ask it not
+to.
 
 ## Features
 
@@ -23,6 +24,12 @@ channels, /say and /yell, without hiding anything from your friends, guild or gr
 - **Settings panel** under *Interface → AddOns → QuietChat*, plus slash commands.
 - **Blocked messages** page in the settings panel, to check what was hidden this session.
 
+## Screenshots
+
+![The General settings: enable the filter, hide the other faction's speech, also filter friends, guild and group, and how often a repeated message shows](docs/images/settings-general.png)
+
+![The Keywords settings: one keyword per line, with * to match inside longer words](docs/images/settings-keywords.png)
+
 ## Languages
 
 QuietChat follows your game client's language: English, Spanish (Spain and Latin America),
@@ -32,12 +39,14 @@ drafted without native speakers, so corrections are welcome; each language is on
 
 ## Installing
 
-1. Download `QuietChat-<version>.zip` from the **Releases** page (not the green *Code* button,
-   whose zip has the wrong folder name and won't load) and extract it into
+1. Download `QuietChat-<version>.zip` from the **Releases** page, not *Source code* or the green
+   *Code* button: those hold the development files, in a folder WoW won't load.
+2. Open the zip and drag the `QuietChat` folder inside it into
    `World of Warcraft/Interface/AddOns/`, so you end up with
-   `Interface/AddOns/QuietChat/QuietChat.toc`.
-2. Restart the game (a `/reload` doesn't pick up new addons).
-3. Open the settings with `/qc config`.
+   `Interface/AddOns/QuietChat/QuietChat.toc`. (Windows' *Extract All* puts it inside an extra
+   `QuietChat-<version>` folder; if it does, move the inner `QuietChat` folder up.)
+3. Restart the game (a `/reload` doesn't pick up new addons).
+4. Open the settings with `/qc config`.
 
 ## Commands
 
