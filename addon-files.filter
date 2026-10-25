@@ -1,0 +1,7 @@
+# The files the game loads, as rsync filter rules. deploy.sh copies these into the game;
+# package.sh zips them for a release, plus README.md and LICENSE.
++ /QuietChat.toc
++ /*.lua
++ /libs/***
++ /Locales/***
+- *

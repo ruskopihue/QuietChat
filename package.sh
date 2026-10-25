@@ -12,9 +12,9 @@ version=$(sed -n 's/^## Version: *//p' QuietChat.toc | tr -d '\r')
 stage=dist/stage
 rm -rf "$stage"
 mkdir -p "$stage/QuietChat"
-# Same files as deploy.sh, plus README.md and LICENSE
-rsync -rt --include='/QuietChat.toc' --include='/*.lua' --include='/libs/***' \
-	--include='/README.md' --include='/LICENSE' --exclude='*' ./ "$stage/QuietChat/"
+# The files the game loads (see addon-files.filter), plus README.md and LICENSE
+rsync -rt --include='/README.md' --include='/LICENSE' --filter='merge addon-files.filter' \
+	./ "$stage/QuietChat/"
 
 zip="QuietChat-$version.zip"
 rm -f "dist/$zip"

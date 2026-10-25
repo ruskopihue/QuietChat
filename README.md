@@ -54,7 +54,7 @@ The default keywords are `wts`, `wtb`, `recruiting` and `lfw`.
   keyword filter for 3.3.5a shared there in 2019. QuietChat started as an update to it and has
   since been rewritten.
 - The settings panel uses the **[Ace3](https://github.com/WoWUIDev/Ace3)** libraries
-  (LibStub, CallbackHandler, AceGUI, AceConfigRegistry and AceConfigDialog), included unmodified
+  (LibStub, CallbackHandler, AceGUI, AceConfigRegistry, AceConfigDialog and AceLocale), included unmodified
   in `libs/`. See `libs/Ace3-LICENSE.txt`.
 
 ## License

@@ -21,6 +21,7 @@ fi
 
 target="$WOW_ADDONS_DIR/QuietChat"
 mkdir -p "$target"
-# Only the files the game loads; --delete removes files that no longer exist here
-rsync -rt --delete --include='/QuietChat.toc' --include='/*.lua' --include='/libs/***' --exclude='*' ./ "$target/"
+# Only the files the game loads (see addon-files.filter); --delete removes files that no
+# longer exist here
+rsync -rt --delete --filter='merge addon-files.filter' ./ "$target/"
 echo "Deployed to $target"

@@ -12,6 +12,7 @@ libs\CallbackHandler-1.0\CallbackHandler-1.0.xml
 libs\AceGUI-3.0\AceGUI-3.0.xml
 libs\AceConfigRegistry-3.0\AceConfigRegistry-3.0.xml
 libs\AceConfigDialog-3.0\AceConfigDialog-3.0.xml
+libs\AceLocale-3.0\AceLocale-3.0.xml
 
 QuietChat.lua
 Commands.lua
