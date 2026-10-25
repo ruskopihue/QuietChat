@@ -13,17 +13,23 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 def addon_files():
     """The addon's own Lua files, in the order QuietChat.toc loads them (libraries excluded)."""
     with open(os.path.join(ROOT, "QuietChat.toc"), encoding="utf-8") as f:
-        lines = [line.strip() for line in f]
-    return [line for line in lines if line.endswith(".lua") and not line.startswith("libs")]
+        lines = [line.strip().replace("\\", "/") for line in f]
+    return [line for line in lines if line.endswith(".lua") and not line.startswith("libs/")]
 
 
-ACE_LIBS = [
+# Every file needs these; the panel also needs the OPTIONS_LIBS
+BASE_LIBS = [
     "libs/LibStub/LibStub.lua",
+    "libs/AceLocale-3.0/AceLocale-3.0.lua",
+]
+OPTIONS_LIBS = [
     "libs/CallbackHandler-1.0/CallbackHandler-1.0.lua",
     "libs/AceConfigRegistry-3.0/AceConfigRegistry-3.0.lua",
 ]
 
 WOW_API = r"""
+-- WoW's strlower also lowercases accented and Cyrillic letters (checked in game); this one only
+-- does A to Z, so tests can't show case-insensitive matching beyond that
 strmatch = string.match; strsub = string.sub; strfind = string.find; gsub = string.gsub; tconcat = table.concat
 strlower = string.lower; format = string.format; tinsert = table.insert; tremove = table.remove; min = math.min
 function wipe(t) for k in pairs(t) do t[k] = nil end return t end
@@ -35,6 +41,8 @@ function tContains(t, v) for _, x in ipairs(t) do if x == v then return true end
 function geterrorhandler() return function(e) error(e, 2) end end
 
 NOW = 0
+LOCALE = "enUS"
+function GetLocale() return LOCALE end
 PLAYER = "Me"
 FRIENDS = {}
 LANGUAGES = { "Common" }
@@ -109,14 +117,18 @@ class Addon:
     """A freshly loaded copy of QuietChat, with default settings unless `saved` is given.
 
     `saved` is the saved settings file as Lua source, e.g. '{ repeatWindow = 30 }'. The game
-    loads it after the addon's files run and before ADDON_LOADED, and so does this.
+    loads it after the addon's files run and before ADDON_LOADED, and so does this. `locale` is
+    what GetLocale() returns, the game client's language.
     """
 
-    def __init__(self, with_options=False, saved=None):
+    def __init__(self, with_options=False, saved=None, locale="enUS"):
         self.lua = lua51.LuaRuntime()
         self.lua.execute(WOW_API)
+        self.lua.globals().LOCALE = locale
+        for path in BASE_LIBS:
+            self._run(path)
         if with_options:
-            for path in ACE_LIBS:
+            for path in OPTIONS_LIBS:
                 self._run(path)
             self.lua.execute(FAKE_DIALOG)
         for path in addon_files():

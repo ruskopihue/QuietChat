@@ -74,7 +74,7 @@ class RepeatFilter(unittest.TestCase):
         self.assertFalse(self.send(LFM, 121))
 
     def test_repeat_command(self):
-        self.assertIn("15s", self.addon.command("repeat"))
+        self.assertIn("15 seconds", self.addon.command("repeat"))
         self.assertIn("Usage", self.addon.command("repeat abc"))
         self.assertIn("shown", self.addon.command("repeat 0"))
 

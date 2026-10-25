@@ -5,6 +5,7 @@
 -- Shared with Commands.lua (slash commands) and Options.lua (settings panel)
 local addon = {}
 QuietChat = addon
+local L = LibStub("AceLocale-3.0"):GetLocale("QuietChat")
 
 local LOG_SIZE = 20
 local defaultWords = { "wts", "wtb", "recruiting", "lfw" }
@@ -244,14 +245,18 @@ end
 function addon.CheckKeyword(text)
 	local word = NormalizeKeyword(text or "")
 	if word == "" then
-		return nil, "Type a keyword first"
+		return nil, L["Type a keyword first"]
 	end
 	if not patterns[word] then
 		return nil,
-			"Use * only at the start or end of a keyword, e.g. " .. Highlight("hell*") .. " or " .. Highlight("*gold*")
+			format(
+				L["Use * only at the start or end of a keyword, e.g. %s or %s"],
+				Highlight("hell*"),
+				Highlight("*gold*")
+			)
 	end
 	if FindWord(word) then
-		return nil, '"' .. Highlight(word) .. '" is already a keyword'
+		return nil, format(L['"%s" is already a keyword'], Highlight(word))
 	end
 	return word
 end
@@ -280,7 +285,8 @@ function addon.ParseKeywordList(text)
 		end
 	end
 	if #bad > 0 then
-		return nil, "Use * only at the start or end of a keyword. Fix these lines: " .. table.concat(bad, ", ")
+		return nil,
+			format(L["Use * only at the start or end of a keyword. Fix these lines: %s"], table.concat(bad, ", "))
 	end
 	return list
 end

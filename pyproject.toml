@@ -25,3 +25,6 @@ target-version = "py312"
 select = ["E", "F", "W", "I", "UP", "B"]
 # The formatter handles line length; what it leaves long is Lua code inside strings
 ignore = ["E501"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["wow"] # tests/wow.py, the test harness
