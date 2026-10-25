@@ -81,6 +81,19 @@ class KeywordMatching(unittest.TestCase):
         self.assertFalse(self.addon.is_hidden("LFM ICC", player="Guildie", at=0))
         self.assertFalse(self.addon.is_hidden("LFM ICC", player="Guildie", at=1))
 
+    def test_log_names_the_keyword_that_matched(self):
+        self.addon.command("add boost*")
+        self.assertTrue(self.hidden("Cheap BOOSTING here"))
+        entry = self.addon.addon.messageLog[1]
+        self.assertEqual((entry.player, entry.text), ("Spammer", "Cheap BOOSTING here"))
+        self.assertEqual((entry.reason, entry.detail), ("keyword", "boost*"))
+
+    def test_log_skips_duplicates_and_shown_messages(self):
+        self.hidden("wts stuff")
+        self.hidden("wts stuff")
+        self.hidden("hello")
+        self.assertEqual(len(self.addon.addon.messageLog), 1)
+
     def test_disabled_filter_hides_nothing(self):
         self.addon.command("toggle")
         self.assertFalse(self.hidden("wts stuff"))
@@ -95,6 +108,8 @@ class ForeignLanguages(unittest.TestCase):
         self.assertFalse(addon.is_hidden("kek", language="Orcish"))
         addon.command("foreign")
         self.assertTrue(addon.is_hidden("kek", language="Orcish"))
+        entry = addon.addon.messageLog[1]
+        self.assertEqual((entry.reason, entry.detail), ("language", "Orcish"))
         self.assertFalse(addon.is_hidden("hello", language="Common"))
         self.assertFalse(addon.is_hidden("hello again", language=""))
 

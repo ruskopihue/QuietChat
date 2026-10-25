@@ -148,6 +148,17 @@ local function KeywordOptions()
 	}
 end
 
+-- One line of the Blocked messages page: who, what, and why it was hidden
+local function FormatLogEntry(entry)
+	local why = entry.reason
+	if entry.reason == "keyword" then
+		why = 'keyword "' .. entry.detail .. '"'
+	elseif entry.reason == "language" then
+		why = entry.detail
+	end
+	return format("|cffd3d3d3[%s]|r: %s |cffd3d3d3(%s)|r", entry.player, entry.text, why)
+end
+
 local function LogOptions()
 	return {
 		type = "group",
@@ -177,7 +188,11 @@ local function LogOptions()
 					if #addon.messageLog == 0 then
 						return "\nNothing has been hidden yet."
 					end
-					return "\n" .. table.concat(addon.messageLog, "\n\n")
+					local lines = {}
+					for i, entry in ipairs(addon.messageLog) do
+						lines[i] = FormatLogEntry(entry)
+					end
+					return "\n" .. table.concat(lines, "\n\n")
 				end,
 			},
 		},

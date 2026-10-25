@@ -24,7 +24,6 @@ read_globals = {
 	"strlower",
 	"strsplit",
 	"strtrim",
-	"tContains",
 	"tinsert",
 	"tremove",
 	"wipe",

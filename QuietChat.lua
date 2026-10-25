@@ -167,45 +167,41 @@ local function IsRepeat(player, msg)
 	return false
 end
 
-local function AddLog(player, msg, reason)
+-- Keeps a hidden message for the Blocked messages page, newest first, as
+-- { player, text, reason, detail } (reason and detail as HideReason returns them)
+local function AddLog(player, msg, reason, detail)
 	-- Skip duplicates so a spammer can't push everything else out of the log
-	local message = format("|cffd3d3d3[%s]|r: %s", player, msg)
-	if reason then
-		message = message .. " |cffd3d3d3(" .. reason .. ")|r"
+	for _, entry in ipairs(messageLog) do
+		if entry.player == player and entry.text == msg then
+			return
+		end
 	end
-	if not tContains(messageLog, message) then
-		tinsert(messageLog, 1, message)
-	end
+	tinsert(messageLog, 1, { player = player, text = msg, reason = reason, detail = detail })
 	if #messageLog > LOG_SIZE then
 		tremove(messageLog)
 	end
 end
 
-local function ShouldHide(msg, player, language)
-	if not db or not db.active then
-		return false
+-- Why a message should be hidden, or nil to show it: "language" (detail: the language),
+-- "keyword" (detail: the keyword that matched) or "repeat"
+local function HideReason(msg, player, language)
+	if not db or not db.active or IsExempt(player) then
+		return nil
 	end
-	if IsExempt(player) then
-		return false
-	end
-	-- Block messages in languages we can't understand (e.g. Orcish for Alliance, Common for Horde)
+	-- Languages we can't understand (e.g. Orcish for Alliance, Common for Horde)
 	if db.blockForeign and language and language ~= "" and not KnowsLanguage(language) then
-		AddLog(player, msg)
-		return true
+		return "language", language
 	end
 	local text = CleanMessage(msg)
 	for _, word in ipairs(db.words) do
 		local pattern = patterns[word]
 		if pattern and text:find(pattern) then
-			AddLog(player, msg)
-			return true
+			return "keyword", word
 		end
 	end
 	if IsRepeat(player, msg) then
-		AddLog(player, msg, "repeat")
-		return true
+		return "repeat"
 	end
-	return false
 end
 
 -- WoW calls the filter once per chat frame that shows the message. Decide once per
@@ -218,7 +214,11 @@ local function OnChatMessage(self, event, msg, player, language, ...)
 		return lastResult
 	end
 	lastLineID = lineID
-	lastResult = ShouldHide(msg, player, language)
+	local reason, detail = HideReason(msg, player, language)
+	if reason then
+		AddLog(player, msg, reason, detail)
+	end
+	lastResult = reason ~= nil
 	return lastResult
 end
 
@@ -229,7 +229,7 @@ ChatFrame_AddMessageEventFilter("CHAT_MSG_YELL", OnChatMessage)
 -- Actions shared by the slash commands and the settings panel
 
 addon.DEFAULT_WORDS = defaultWords
-addon.messageLog = messageLog
+addon.messageLog = messageLog -- hidden messages, see AddLog
 addon.Highlight = Highlight
 -- Redraws the settings panel after a slash command (replaced by Options.lua). Not called
 -- for changes made in the panel: it redraws itself, and redrawing mid-drag breaks sliders.

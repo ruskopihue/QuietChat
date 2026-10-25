@@ -83,6 +83,17 @@ class SettingsPanel(unittest.TestCase):
         self.assertIn("WTS stuff", log.args.messages.name(None))
         self.assertIn("last 1 ", log.args.intro.name)
 
+    def test_log_page_says_why(self):
+        self.addon.command("foreign")
+        self.addon.is_hidden("WTS stuff", at=0)
+        self.addon.is_hidden("kek", language="Orcish", at=1)
+        self.addon.is_hidden("LFM ICC", at=2)
+        self.addon.is_hidden("LFM ICC", at=3)
+        page = self.addon.options().args.log.args.messages.name(None)
+        for why in ['(keyword "wts")', "(Orcish)", "(repeat)"]:
+            with self.subTest(why=why):
+                self.assertIn(why, page)
+
     def test_slash_commands_redraw_the_panel(self):
         before = self.addon.g.REDRAWS
         self.addon.command("add icc*")
