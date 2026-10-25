@@ -5,6 +5,7 @@
 ## Notes: Hides chat spam by keyword, language and repeated messages. Based on ChatFilter by Xcom (hellohamburger).
 ## SavedVariables: QuietChatDB
 ## OptionalDeps: Ace3
+## X-Website: https://github.com/ruskopihue/QuietChat
 
 libs\LibStub\LibStub.lua
 libs\CallbackHandler-1.0\CallbackHandler-1.0.xml
