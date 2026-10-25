@@ -102,9 +102,13 @@ LibStub("AceConfigRegistry-3.0").RegisterCallback(dialog, "ConfigTableChange", f
 
 
 class Addon:
-    """A freshly loaded copy of QuietChat with default settings."""
+    """A freshly loaded copy of QuietChat, with default settings unless `saved` is given.
 
-    def __init__(self, with_options=False):
+    `saved` is the saved settings file as Lua source, e.g. '{ repeatWindow = 30 }'. The game
+    loads it after the addon's files run and before ADDON_LOADED, and so does this.
+    """
+
+    def __init__(self, with_options=False, saved=None):
         self.lua = lua51.LuaRuntime()
         self.lua.execute(WOW_API)
         if with_options:
@@ -115,6 +119,8 @@ class Addon:
             # Options.lua needs the Ace3 libraries, which only load with_options
             if path != "Options.lua" or with_options:
                 self._run(path)
+        if saved is not None:
+            self.lua.execute("QuietChatDB = " + saved)
         self.lua.execute('for _, f in ipairs(FRAMES) do f.onEvent(f, "ADDON_LOADED", "QuietChat") end')
         self.g = self.lua.globals()
         self.addon = self.g.QuietChat

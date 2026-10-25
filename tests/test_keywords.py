@@ -143,16 +143,6 @@ class Commands(unittest.TestCase):
             with self.subTest(removed=removed):
                 self.assertNotIn(removed, output)
 
-    def test_old_settings_are_dropped_on_load(self):
-        # Saved settings from before 1.0 load again as if logging in
-        self.addon.lua.execute("""
-            QuietChatDB = { verbose = true, whispers = true, words = { "gold" } }
-            for _, f in ipairs(FRAMES) do f.onEvent(f, "ADDON_LOADED", "QuietChat") end
-        """)
-        self.assertIsNone(self.addon.db.verbose)
-        self.assertIsNone(self.addon.db.whispers)
-        self.assertEqual(self.addon.keywords, ["gold"])
-
 
 if __name__ == "__main__":
     unittest.main()

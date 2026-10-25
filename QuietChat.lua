@@ -81,15 +81,17 @@ local function CleanMessage(msg)
 	return strlower(msg)
 end
 
--- Settings are saved in QuietChatDB; fill in anything missing with the defaults
+-- Settings are saved in QuietChatDB. The file may come from an older version or be edited by
+-- hand, so it's checked here once and the rest of the addon can trust it.
 local function InitDB()
 	if type(QuietChatDB) ~= "table" then
 		QuietChatDB = {}
 	end
 	db = QuietChatDB
 
+	-- Anything missing or of the wrong type (e.g. repeatWindow = "30") gets its default
 	for key, value in pairs(defaults) do
-		if db[key] == nil then
+		if type(db[key]) ~= type(value) then
 			db[key] = value
 		end
 	end
@@ -99,9 +101,14 @@ local function InitDB()
 	if type(db.words) ~= "table" then
 		db.words = CopyDefaultWords()
 	end
-	for i, word in ipairs(db.words) do
-		db.words[i] = NormalizeKeyword(word)
+	local words = {}
+	for _, word in ipairs(db.words) do
+		word = type(word) == "string" and NormalizeKeyword(word) or ""
+		if word ~= "" then
+			tinsert(words, word)
+		end
 	end
+	db.words = words
 end
 
 local function IsFriend(name)
