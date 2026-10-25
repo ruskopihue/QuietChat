@@ -45,8 +45,8 @@ local function GeneralOptions()
 				type = "toggle",
 				order = 3,
 				width = "full",
-				name = L["Block languages you don't speak"],
-				desc = L["Hide messages in languages your character can't read, like Orcish for Alliance or Common for Horde."],
+				name = L["Hide the other faction's speech"],
+				desc = L["Hides /say and /yell in languages your character can't read: Orcish for Alliance, Common for Horde, and your own faction's racial languages you don't know."],
 				disabled = Inactive,
 			},
 			filterExempt = {

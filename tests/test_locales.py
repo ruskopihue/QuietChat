@@ -90,7 +90,7 @@ class EachClient(unittest.TestCase):
         for client, locale in self.clients().items():
             with self.subTest(client=client):
                 addon = Addon(with_options=True, locale=client)
-                addon.command("foreign")
+                addon.command("languages")
                 addon.is_hidden("wts stuff", at=0)
                 addon.is_hidden("kek", language="Orcish", at=1)
                 addon.is_hidden("LFM ICC", at=2)

@@ -24,8 +24,8 @@ local function FilterState(db)
 	return OnOff(db.active, L["Filter is active"], L["Filter is disabled"])
 end
 
-local function ForeignState(db)
-	return OnOff(db.blockForeign, L["Foreign languages are blocked"], L["Foreign languages are shown"])
+local function LanguageState(db)
+	return OnOff(db.blockForeign, L["The other faction's speech is hidden"], L["The other faction's speech is shown"])
 end
 
 local function RepeatState(db)
@@ -38,7 +38,7 @@ end
 
 local function ShowStatus(db)
 	Print(FilterState(db))
-	print("  " .. ForeignState(db))
+	print("  " .. LanguageState(db))
 	print("  " .. RepeatState(db))
 	print("  " .. format(L["Keywords: %s (/qc words to list them)"], Highlight(#db.words)))
 end
@@ -51,7 +51,7 @@ local function ShowHelp()
 	local word, seconds = Highlight(L["word"]), Highlight(L["seconds"])
 	HelpLine("/qc config", L["Open the settings panel"])
 	HelpLine("/qc toggle", L["Turn the filter on or off"])
-	HelpLine("/qc foreign", L["Block or show messages in languages you don't speak (e.g. Orcish)"])
+	HelpLine("/qc languages", L["Hide or show the other faction's speech"])
 	HelpLine(
 		"/qc repeat [" .. seconds .. "]",
 		L["Show a player's message only once within this many seconds, across all channels (0 = off)"]
@@ -98,9 +98,9 @@ local function RunCommand(input)
 	elseif cmd == "toggle" then
 		db.active = not db.active
 		Print(FilterState(db))
-	elseif cmd == "foreign" then
+	elseif cmd == "languages" then
 		db.blockForeign = not db.blockForeign
-		Print(ForeignState(db))
+		Print(LanguageState(db))
 	elseif cmd == "repeat" then
 		if arg then
 			if not arg:match("^%d+$") then

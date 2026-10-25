@@ -16,8 +16,8 @@ L["Use * only at the start or end of a keyword. Fix these lines: %s"] =
 -- Slash commands (Commands.lua)
 L["Filter is active"] = "Le filtre est activé"
 L["Filter is disabled"] = "Le filtre est désactivé"
-L["Foreign languages are blocked"] = "Les langues étrangères sont bloquées"
-L["Foreign languages are shown"] = "Les langues étrangères sont affichées"
+L["The other faction's speech is hidden"] = "Les paroles de l'autre faction sont masquées"
+L["The other faction's speech is shown"] = "Les paroles de l'autre faction sont affichées"
 L["Repeated messages are hidden for %s seconds after the first one"] =
 	"Les messages répétés sont masqués pendant %s secondes après le premier"
 L["Repeated messages are shown"] = "Les messages répétés sont affichés"
@@ -26,8 +26,7 @@ L["word"] = "mot"
 L["seconds"] = "secondes"
 L["Open the settings panel"] = "Ouvre le panneau des options"
 L["Turn the filter on or off"] = "Active ou désactive le filtre"
-L["Block or show messages in languages you don't speak (e.g. Orcish)"] =
-	"Bloque ou affiche les messages dans les langues que vous ne parlez pas (par ex. l'orc)"
+L["Hide or show the other faction's speech"] = "Masque ou affiche les paroles de l'autre faction"
 L["Show a player's message only once within this many seconds, across all channels (0 = off)"] =
 	"N'affiche le message d'un joueur qu'une fois sur ce nombre de secondes, sur tous les canaux (0 = désactivé)"
 L["List keywords (whole words, case-insensitive)"] =
@@ -58,9 +57,9 @@ L["Hides chat spam in channels, /say and /yell. Messages from friends, guild, pa
 	"Masque le spam du chat dans les canaux, /say et /yell. Les messages de vos amis, de votre guilde, de votre groupe et de votre raid ne sont pas masqués sauf si vous l'activez ci-dessous, et les vôtres jamais."
 L["Enable filter"] = "Activer le filtre"
 L["Turn all filtering on or off."] = "Active ou désactive tout le filtrage."
-L["Block languages you don't speak"] = "Bloquer les langues que vous ne parlez pas"
-L["Hide messages in languages your character can't read, like Orcish for Alliance or Common for Horde."] =
-	"Masque les messages dans les langues que votre personnage ne comprend pas, comme l'orc pour l'Alliance ou le commun pour la Horde."
+L["Hide the other faction's speech"] = "Masquer les paroles de l'autre faction"
+L["Hides /say and /yell in languages your character can't read: Orcish for Alliance, Common for Horde, and your own faction's racial languages you don't know."] =
+	"Masque /say et /yell dans les langues que votre personnage ne comprend pas : l'orc pour l'Alliance, le commun pour la Horde, et les langues raciales de votre propre faction que vous ne connaissez pas."
 L["Also filter friends, guild and group"] = "Filtrer aussi amis, guilde et groupe"
 L["Apply the filter to your friends, guild members, party and raid too. Your own messages are never hidden."] =
 	"Applique aussi le filtre à vos amis, aux membres de votre guilde, à votre groupe et à votre raid. Vos propres messages ne sont jamais masqués."

@@ -112,11 +112,11 @@ class KeywordMatching(unittest.TestCase):
         self.assertIsNone(self.addon.g.FILTERS["CHAT_MSG_WHISPER"])
 
 
-class ForeignLanguages(unittest.TestCase):
+class OtherFactionSpeech(unittest.TestCase):
     def test_blocks_unknown_languages_when_enabled(self):
         addon = Addon()
         self.assertFalse(addon.is_hidden("kek", language="Orcish"))
-        addon.command("foreign")
+        addon.command("languages")
         self.assertTrue(addon.is_hidden("kek", language="Orcish"))
         entry = addon.addon.messageLog[1]
         self.assertEqual((entry.reason, entry.detail), ("language", "Orcish"))

@@ -15,8 +15,9 @@ channels, /say and /yell, without hiding anything from your friends, guild or gr
   /yell within seconds, you see it once. Their next round shows again after a delay you choose
   (15 seconds by default). Changes in capitalization, spacing or symbols don't count as a new
   message.
-- **Foreign languages.** Optionally hide /say and /yell in languages your character doesn't speak,
-  such as Orcish for Alliance or Common for Horde.
+- **The other faction's speech.** Optionally hide /say and /yell in languages your character
+  doesn't speak: Orcish for Alliance, Common for Horde, and your own faction's racial languages
+  you don't know. Real-world languages aren't affected.
 - **Leaves your people alone.** Messages from friends, guild members and your party or raid
   aren't hidden, unless you turn that on in the settings. Your own messages never are.
 - **Settings panel** under *Interface → AddOns → QuietChat*, plus slash commands.
@@ -46,7 +47,7 @@ drafted without native speakers, so corrections are welcome; each language is on
 |---|---|
 | `/qc config` | Open the settings panel |
 | `/qc toggle` | Turn the filter on or off |
-| `/qc foreign` | Hide or show languages you don't speak |
+| `/qc languages` | Hide or show the other faction's speech |
 | `/qc repeat [seconds]` | Show a player's message once within this many seconds (0 = off) |
 | `/qc words` | List keywords |
 | `/qc add <word>` | Add a keyword or phrase |

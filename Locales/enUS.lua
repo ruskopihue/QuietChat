@@ -14,8 +14,8 @@ L["Use * only at the start or end of a keyword. Fix these lines: %s"] = true
 -- Slash commands (Commands.lua)
 L["Filter is active"] = true
 L["Filter is disabled"] = true
-L["Foreign languages are blocked"] = true
-L["Foreign languages are shown"] = true
+L["The other faction's speech is hidden"] = true
+L["The other faction's speech is shown"] = true
 L["Repeated messages are hidden for %s seconds after the first one"] = true
 L["Repeated messages are shown"] = true
 L["Keywords: %s (/qc words to list them)"] = true
@@ -23,7 +23,7 @@ L["word"] = true
 L["seconds"] = true
 L["Open the settings panel"] = true
 L["Turn the filter on or off"] = true
-L["Block or show messages in languages you don't speak (e.g. Orcish)"] = true
+L["Hide or show the other faction's speech"] = true
 L["Show a player's message only once within this many seconds, across all channels (0 = off)"] = true
 L["List keywords (whole words, case-insensitive)"] = true
 L['Add a keyword or phrase. A * at the start or end also matches inside words: %s matches "hello"'] = true
@@ -48,8 +48,9 @@ L["Hides chat spam in channels, /say and /yell. Messages from friends, guild, pa
 	true
 L["Enable filter"] = true
 L["Turn all filtering on or off."] = true
-L["Block languages you don't speak"] = true
-L["Hide messages in languages your character can't read, like Orcish for Alliance or Common for Horde."] = true
+L["Hide the other faction's speech"] = true
+L["Hides /say and /yell in languages your character can't read: Orcish for Alliance, Common for Horde, and your own faction's racial languages you don't know."] =
+	true
 L["Also filter friends, guild and group"] = true
 L["Apply the filter to your friends, guild members, party and raid too. Your own messages are never hidden."] = true
 L["Repeated messages"] = true
