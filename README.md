@@ -22,6 +22,13 @@ channels, /say and /yell, without hiding anything from your friends, guild or gr
 - **Settings panel** under *Interface → AddOns → QuietChat*, plus slash commands.
 - **Blocked messages** page in the settings panel, to check what was hidden this session.
 
+## Languages
+
+QuietChat follows your game client's language: English, Spanish (Spain and Latin America),
+German or French. The slash commands are the same in every language. The translations were
+drafted without native speakers, so corrections are welcome; each language is one file in
+`Locales/`.
+
 ## Installing
 
 1. Download `QuietChat-<version>.zip` from the **Releases** page (not the green *Code* button,

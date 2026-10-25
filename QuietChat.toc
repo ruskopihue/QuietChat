@@ -3,6 +3,10 @@
 ## Author: Ruskopihue
 ## Version: 1.0
 ## Notes: Hides chat spam by keyword, language and repeated messages. Based on ChatFilter by Xcom (hellohamburger).
+## Notes-esES: Oculta el spam del chat por palabras clave, idioma y mensajes repetidos. Basado en ChatFilter de Xcom (hellohamburger).
+## Notes-esMX: Oculta el spam del chat por palabras clave, idioma y mensajes repetidos. Basado en ChatFilter de Xcom (hellohamburger).
+## Notes-deDE: Blendet Chat-Spam nach Schlüsselwörtern, Sprache und wiederholten Nachrichten aus. Basiert auf ChatFilter von Xcom (hellohamburger).
+## Notes-frFR: Masque le spam du chat par mots-clés, langue et messages répétés. Basé sur ChatFilter de Xcom (hellohamburger).
 ## SavedVariables: QuietChatDB
 ## OptionalDeps: Ace3
 ## X-Website: https://github.com/ruskopihue/QuietChat
@@ -15,6 +19,9 @@ libs\AceConfigDialog-3.0\AceConfigDialog-3.0.xml
 libs\AceLocale-3.0\AceLocale-3.0.xml
 
 Locales\enUS.lua
+Locales\esES.lua
+Locales\deDE.lua
+Locales\frFR.lua
 
 QuietChat.lua
 Commands.lua
