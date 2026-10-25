@@ -30,7 +30,7 @@ local function GeneralOptions()
 				type = "description",
 				order = 1,
 				fontSize = "medium",
-				name = "Hides chat spam in channels, /say and /yell. Messages from friends, guild, party and raid members, and your own, are never hidden.\n",
+				name = "Hides chat spam in channels, /say and /yell. Messages from friends, guild, party and raid members aren't hidden unless you turn that on below, and your own never are.\n",
 			},
 			active = {
 				type = "toggle",
@@ -45,6 +45,14 @@ local function GeneralOptions()
 				width = "full",
 				name = "Block languages you don't speak",
 				desc = "Hide messages in languages your character can't read, like Orcish for Alliance or Common for Horde.",
+				disabled = Inactive,
+			},
+			filterExempt = {
+				type = "toggle",
+				order = 4,
+				width = "full",
+				name = "Also filter friends, guild and group",
+				desc = "Apply the filter to your friends, guild members, party and raid too. Your own messages are never hidden.",
 				disabled = Inactive,
 			},
 			repeatHeader = {

@@ -8,7 +8,7 @@ QuietChat = addon
 
 local LOG_SIZE = 20
 local defaultWords = { "wts", "wtb", "recruiting", "lfw" }
-local defaults = { active = true, blockForeign = false, repeatWindow = 15 }
+local defaults = { active = true, blockForeign = false, filterExempt = false, repeatWindow = 15 }
 
 local db
 local messageLog = {}
@@ -120,13 +120,14 @@ local function IsFriend(name)
 	return false
 end
 
--- Messages from these players are never hidden: you, your friends, guild, party and raid
+-- Messages from these players are never hidden: you, and your friends, guild, party and raid
+-- unless db.filterExempt is on
 local function IsExempt(player)
-	return player == UnitName("player")
-		or UnitIsInMyGuild(player)
-		or IsFriend(player)
-		or UnitInRaid(player)
-		or UnitInParty(player)
+	if player == UnitName("player") then
+		return true
+	end
+	return not db.filterExempt
+		and (UnitIsInMyGuild(player) or IsFriend(player) or UnitInRaid(player) or UnitInParty(player))
 end
 
 local function KnowsLanguage(language)

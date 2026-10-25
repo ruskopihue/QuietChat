@@ -34,10 +34,17 @@ class SettingsPanel(unittest.TestCase):
         general.set(self.info("blockForeign"), True)
         self.assertTrue(self.addon.db.blockForeign)
 
+    def test_filter_exempt_toggle_is_off_by_default(self):
+        general = self.options.args.general
+        self.assertFalse(general.get(self.info("filterExempt")))
+        general.set(self.info("filterExempt"), True)
+        self.assertTrue(self.addon.db.filterExempt)
+
     def test_other_options_disabled_when_filter_off(self):
         general = self.options.args.general
         general.set(self.info("active"), False)
         self.assertTrue(general.args.blockForeign.disabled(None))
+        self.assertTrue(general.args.filterExempt.disabled(None))
 
     def test_slider_saves_without_forcing_a_redraw(self):
         # A redraw during a drag destroys the slider, so panel changes must not request one

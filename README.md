@@ -17,7 +17,8 @@ channels, /say and /yell, without hiding anything from your friends, guild or gr
   message.
 - **Foreign languages.** Optionally hide /say and /yell in languages your character doesn't speak,
   such as Orcish for Alliance or Common for Horde.
-- **Never hides** messages from friends, guild members, your party or raid, or yourself.
+- **Leaves your people alone.** Messages from friends, guild members and your party or raid
+  aren't hidden, unless you turn that on in the settings. Your own messages never are.
 - **Settings panel** under *Interface → AddOns → QuietChat*, plus slash commands.
 - **Blocked messages** page in the settings panel, to check what was hidden this session.
 

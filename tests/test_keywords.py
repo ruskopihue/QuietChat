@@ -76,6 +76,16 @@ class KeywordMatching(unittest.TestCase):
                 self.assertFalse(self.addon.is_hidden("wts stuff", player=player))
         self.assertTrue(self.addon.is_hidden("wts stuff", player="Stranger"))
 
+    def test_option_filters_exempt_players_but_never_you(self):
+        self.addon.g.FRIENDS[1] = "Buddy"
+        self.addon.g.GUILD["Guildie"] = True
+        self.addon.g.GROUP["Healer"] = True
+        self.addon.db.filterExempt = True
+        for player in ["Buddy", "Guildie", "Healer"]:
+            with self.subTest(player=player):
+                self.assertTrue(self.addon.is_hidden("wts stuff", player=player))
+        self.assertFalse(self.addon.is_hidden("wts stuff", player="Me"))
+
     def test_exempt_players_skip_the_repeat_filter_too(self):
         self.addon.g.GUILD["Guildie"] = True
         self.assertFalse(self.addon.is_hidden("LFM ICC", player="Guildie", at=0))
