@@ -42,9 +42,13 @@ function GetTime() return NOW end
 function UnitName() return PLAYER end
 function GetNumFriends() return #FRIENDS end
 function GetFriendInfo(i) return FRIENDS[i] end
-function UnitIsInMyGuild() return false end
-function UnitInRaid() return nil end
-function UnitInParty() return nil end
+-- The addon passes these a player's name. In game that may only work for names the client can
+-- resolve to a unit (group members); here a name in GUILD or GROUP always counts.
+GUILD = {}
+GROUP = {}
+function UnitIsInMyGuild(name) return GUILD[name] end
+function UnitInRaid(name) return GROUP[name] end
+function UnitInParty(name) return GROUP[name] end
 function GetNumLanguages() return #LANGUAGES end
 function GetLanguageByIndex(i) return LANGUAGES[i] end
 

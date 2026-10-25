@@ -120,6 +120,15 @@ local function IsFriend(name)
 	return false
 end
 
+-- Messages from these players are never hidden: you, your friends, guild, party and raid
+local function IsExempt(player)
+	return player == UnitName("player")
+		or UnitIsInMyGuild(player)
+		or IsFriend(player)
+		or UnitInRaid(player)
+		or UnitInParty(player)
+end
+
 local function KnowsLanguage(language)
 	for i = 1, GetNumLanguages() do
 		if language == GetLanguageByIndex(i) then
@@ -176,13 +185,7 @@ local function ShouldHide(msg, player, language)
 	if not db or not db.active then
 		return false
 	end
-	if
-		player == UnitName("player")
-		or UnitIsInMyGuild(player)
-		or IsFriend(player)
-		or UnitInRaid(player)
-		or UnitInParty(player)
-	then
+	if IsExempt(player) then
 		return false
 	end
 	-- Block messages in languages we can't understand (e.g. Orcish for Alliance, Common for Horde)
