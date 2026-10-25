@@ -1,0 +1,14 @@
+{
+	"$schema": "https://raw.githubusercontent.com/LuaLS/vscode-lua/master/setting/schema.json",
+	"runtime.version": "Lua 5.1",
+	"runtime.builtin": {
+		"io": "disable",
+		"package": "disable"
+	},
+	"workspace.library": ["libs"],
+	"workspace.ignoreDir": [".vscode", ".venv", "tests", "libs"],
+	"workspace.checkThirdParty": false,
+	"diagnostics.libraryFiles": "Disable",
+	"diagnostics.disable": ["undefined-global"],
+	"format.enable": false
+}

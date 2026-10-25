@@ -1,0 +1,34 @@
+name: Checks
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_call:
+
+jobs:
+  lua:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Install luacheck
+        run: |
+          curl -fsSL -o "$RUNNER_TEMP/luacheck" https://github.com/lunarmodules/luacheck/releases/download/v1.2.0/luacheck
+          chmod +x "$RUNNER_TEMP/luacheck"
+          echo "$RUNNER_TEMP" >> "$GITHUB_PATH"
+      - run: luacheck .
+      - uses: JohnnyMorganz/stylua-action@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          version: 2.6.0
+          args: --check .
+
+  python:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v10
+      - run: uv sync --locked
+      - run: uv run ruff check .
+      - run: uv run ruff format --check .
+      - run: uv run pytest

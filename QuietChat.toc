@@ -1,0 +1,16 @@
+## Interface: 30300
+## Title: QuietChat
+## Author: Ruskopihue
+## Version: 1.0
+## Notes: Hides chat spam by keyword, language and repeated messages. Based on ChatFilter by Xcom (hellohamburger).
+## SavedVariables: QuietChatDB
+## OptionalDeps: Ace3
+
+libs\LibStub\LibStub.lua
+libs\CallbackHandler-1.0\CallbackHandler-1.0.xml
+libs\AceGUI-3.0\AceGUI-3.0.xml
+libs\AceConfigRegistry-3.0\AceConfigRegistry-3.0.xml
+libs\AceConfigDialog-3.0\AceConfigDialog-3.0.xml
+
+QuietChat.lua
+Options.lua

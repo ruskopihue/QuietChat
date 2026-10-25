@@ -1,0 +1,3 @@
+# Third-party libraries are kept exactly as released
+libs/
+.venv/
