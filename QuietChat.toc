@@ -13,4 +13,5 @@ libs\AceConfigRegistry-3.0\AceConfigRegistry-3.0.xml
 libs\AceConfigDialog-3.0\AceConfigDialog-3.0.xml
 
 QuietChat.lua
+Commands.lua
 Options.lua

@@ -9,6 +9,14 @@ from lupa import lua51
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+
+def addon_files():
+    """The addon's own Lua files, in the order QuietChat.toc loads them (libraries excluded)."""
+    with open(os.path.join(ROOT, "QuietChat.toc"), encoding="utf-8") as f:
+        lines = [line.strip() for line in f]
+    return [line for line in lines if line.endswith(".lua") and not line.startswith("libs")]
+
+
 ACE_LIBS = [
     "libs/LibStub/LibStub.lua",
     "libs/CallbackHandler-1.0/CallbackHandler-1.0.lua",
@@ -103,9 +111,10 @@ class Addon:
             for path in ACE_LIBS:
                 self._run(path)
             self.lua.execute(FAKE_DIALOG)
-        self._run("QuietChat.lua")
-        if with_options:
-            self._run("Options.lua")
+        for path in addon_files():
+            # Options.lua needs the Ace3 libraries, which only load with_options
+            if path != "Options.lua" or with_options:
+                self._run(path)
         self.lua.execute('for _, f in ipairs(FRAMES) do f.onEvent(f, "ADDON_LOADED", "QuietChat") end')
         self.g = self.lua.globals()
         self.addon = self.g.QuietChat
