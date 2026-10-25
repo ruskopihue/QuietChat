@@ -9,11 +9,10 @@ QuietChat = addon
 local PREFIX = "|cff00ffffQuietChat:|r "
 local LOG_SIZE = 20
 local defaultWords = { "wts", "wtb", "recruiting", "lfw" }
-local defaults = { active = true, verbose = false, blockForeign = false, whispers = false, repeatWindow = 15 }
+local defaults = { active = true, blockForeign = false, repeatWindow = 15 }
 
 local db
 local messageLog = {}
-local lastNotice = 0
 local recentMessages = {} -- [player:text] = time the message was last shown
 local lastPrune = 0
 
@@ -107,6 +106,9 @@ local function InitDB()
 			db[key] = value
 		end
 	end
+	-- Settings that no longer exist (notifications and whisper filtering, removed in 1.0)
+	db.verbose = nil
+	db.whispers = nil
 	if type(db.words) ~= "table" then
 		db.words = CopyDefaultWords()
 	end
@@ -158,10 +160,6 @@ local function IsRepeat(player, msg)
 end
 
 local function AddLog(player, msg, reason)
-	if db.verbose and lastNotice + 2 <= GetTime() then
-		Print("Filtered a message from " .. player)
-		lastNotice = GetTime()
-	end
 	-- Skip duplicates so a spammer can't push everything else out of the log
 	local message = format("|cffd3d3d3[%s]|r: %s", player, msg)
 	if reason then
@@ -175,23 +173,8 @@ local function AddLog(player, msg, reason)
 	end
 end
 
-local function DisplayLog(n)
-	if #messageLog == 0 then
-		Print("The message log is empty")
-		return
-	end
-	local count = min(n, #messageLog)
-	Print("Displaying the last " .. count .. " messages")
-	for i = 1, count do
-		print("|cffd3d3d3" .. i .. "|r. " .. messageLog[i])
-	end
-end
-
-local function ShouldHide(event, msg, player, language)
+local function ShouldHide(msg, player, language)
 	if not db or not db.active then
-		return false
-	end
-	if event == "CHAT_MSG_WHISPER" and not db.whispers then
 		return false
 	end
 	if
@@ -233,14 +216,13 @@ local function OnChatMessage(self, event, msg, player, language, ...)
 		return lastResult
 	end
 	lastLineID = lineID
-	lastResult = ShouldHide(event, msg, player, language)
+	lastResult = ShouldHide(msg, player, language)
 	return lastResult
 end
 
 ChatFrame_AddMessageEventFilter("CHAT_MSG_CHANNEL", OnChatMessage)
 ChatFrame_AddMessageEventFilter("CHAT_MSG_SAY", OnChatMessage)
 ChatFrame_AddMessageEventFilter("CHAT_MSG_YELL", OnChatMessage)
-ChatFrame_AddMessageEventFilter("CHAT_MSG_WHISPER", OnChatMessage)
 
 -- Actions shared by the slash commands and the settings panel
 
@@ -333,9 +315,7 @@ end)
 local function ShowStatus()
 	Print("Filter is " .. OnOff(db.active, "active", "disabled"))
 	print("  Foreign languages: " .. OnOff(db.blockForeign, "blocked", "shown"))
-	print("  Whispers: " .. OnOff(db.whispers, "filtered", "not filtered"))
 	print("  Repeats: " .. OnOff(db.repeatWindow > 0, "hidden for " .. db.repeatWindow .. "s", "shown"))
-	print("  Notifications: " .. OnOff(db.verbose, "shown", "hidden"))
 	print("  Keywords: " .. Highlight(#db.words) .. " (/qc words to list them)")
 end
 
@@ -343,13 +323,11 @@ local function ShowHelp()
 	print("/qc config - Open the settings panel")
 	print("/qc toggle - Turn the filter |cff00ff00on|r / |cffff0000off|r")
 	print("/qc foreign - Block or show messages in languages you don't speak (e.g. Orcish)")
-	print("/qc whispers - Also apply the filter to whispers")
 	print(
 		"/qc repeat ["
 			.. Highlight("seconds")
 			.. "] - Show a player's message only once within this many seconds, across all channels (0 = off)"
 	)
-	print("/qc verbose - Show or hide filter notifications")
 	print("/qc words - List keywords (whole words, case-insensitive)")
 	print(
 		"/qc add "
@@ -358,27 +336,9 @@ local function ShowHelp()
 			.. Highlight("hell*")
 			.. ' matches "hello"'
 	)
-	print("/qc remove " .. Highlight("word") .. " or " .. Highlight("number") .. " - Remove a keyword")
-	print(
-		"/qc log ["
-			.. Highlight("n")
-			.. "] - Show the last "
-			.. Highlight("n")
-			.. " filtered messages (up to "
-			.. LOG_SIZE
-			.. ")"
-	)
+	print("/qc remove " .. Highlight("word") .. " - Remove a keyword or phrase")
 	print("/qc default - Reset keywords to the default list")
-end
-
--- Returns a positive whole number from text, or nil
-local function ParseIndex(text)
-	if text and text:match("^%d+$") then
-		local n = tonumber(text)
-		if n >= 1 then
-			return n
-		end
-	end
+	print("Hidden messages are listed in the settings panel, under Blocked messages")
 end
 
 local function RunCommand(input)
@@ -408,9 +368,6 @@ local function RunCommand(input)
 	elseif cmd == "foreign" then
 		db.blockForeign = not db.blockForeign
 		Print("Foreign language messages will be " .. OnOff(db.blockForeign, "blocked", "shown"))
-	elseif cmd == "whispers" then
-		db.whispers = not db.whispers
-		Print("Whispers will " .. OnOff(db.whispers, "be filtered", "not be filtered"))
 	elseif cmd == "repeat" then
 		if arg then
 			if not arg:match("^%d+$") then
@@ -424,18 +381,15 @@ local function RunCommand(input)
 		else
 			Print("Repeated messages are |cffff0000shown|r")
 		end
-	elseif cmd == "verbose" then
-		db.verbose = not db.verbose
-		Print("Notifications will be " .. OnOff(db.verbose, "shown", "hidden"))
 	elseif cmd == "words" then
 		if #db.words == 0 then
 			Print("No keywords set. Add one with /qc add " .. Highlight("word"))
 			return
 		end
 		Print("Keywords:")
-		for i, word in ipairs(db.words) do
+		for _, word in ipairs(db.words) do
 			local note = patterns[word] and "" or " |cffff0000(invalid, never matches)|r"
-			print("  " .. Highlight(i) .. ' "' .. word .. '"' .. note)
+			print('  "' .. Highlight(word) .. '"' .. note)
 		end
 	elseif cmd == "add" then
 		if not arg then
@@ -450,34 +404,16 @@ local function RunCommand(input)
 		end
 	elseif cmd == "remove" then
 		if not arg then
-			Print("Usage: /qc remove " .. Highlight("word") .. " or " .. Highlight("number"))
+			Print("Usage: /qc remove " .. Highlight("word"))
 			return
 		end
-		local index = ParseIndex(arg)
-		if index then
-			if index > #db.words then
-				Print("There is no keyword number " .. index .. ". See /qc words")
-				return
-			end
-		else
-			index = FindWord(NormalizeKeyword(arg))
-			if not index then
-				Print('"' .. Highlight(arg) .. '" is not a keyword. See /qc words')
-				return
-			end
+		local index = FindWord(NormalizeKeyword(arg))
+		if not index then
+			Print('"' .. Highlight(arg) .. '" is not a keyword. See /qc words')
+			return
 		end
 		local removed = addon.RemoveKeyword(index)
 		Print('Removed "' .. Highlight(removed) .. '"')
-	elseif cmd == "log" then
-		local n = 10
-		if arg then
-			n = ParseIndex(arg)
-			if not n then
-				Print("Usage: /qc log [" .. Highlight("n") .. "], where n is a number")
-				return
-			end
-		end
-		DisplayLog(n)
 	elseif cmd == "default" then
 		addon.ResetKeywords()
 		Print("Keywords reset to the default list")

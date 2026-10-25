@@ -20,7 +20,6 @@ globals = {
 read_globals = {
 	-- Lua functions WoW adds or renames
 	"format",
-	"min",
 	"strjoin",
 	"strlower",
 	"strsplit",

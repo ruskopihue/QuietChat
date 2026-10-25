@@ -17,10 +17,9 @@ channels, /say and /yell, without hiding anything from your friends, guild or gr
   message.
 - **Foreign languages.** Optionally hide /say and /yell in languages your character doesn't speak,
   such as Orcish for Alliance or Common for Horde.
-- **Whispers.** Optionally apply the filter to whispers too.
 - **Never hides** messages from friends, guild members, your party or raid, or yourself.
 - **Settings panel** under *Interface → AddOns → QuietChat*, plus slash commands.
-- **Blocked messages log** to check what was hidden this session.
+- **Blocked messages** page in the settings panel, to check what was hidden this session.
 
 ## Installing
 
@@ -40,13 +39,10 @@ channels, /say and /yell, without hiding anything from your friends, guild or gr
 | `/qc config` | Open the settings panel |
 | `/qc toggle` | Turn the filter on or off |
 | `/qc foreign` | Hide or show languages you don't speak |
-| `/qc whispers` | Also filter whispers |
 | `/qc repeat [seconds]` | Show a player's message once within this many seconds (0 = off) |
-| `/qc verbose` | Print a line in chat when something is hidden |
 | `/qc words` | List keywords |
 | `/qc add <word>` | Add a keyword or phrase |
-| `/qc remove <word or number>` | Remove a keyword |
-| `/qc log [n]` | Show the last *n* hidden messages (up to 20) |
+| `/qc remove <word>` | Remove a keyword or phrase |
 | `/qc default` | Reset keywords to the default list |
 
 The default keywords are `wts`, `wtb`, `recruiting` and `lfw`.

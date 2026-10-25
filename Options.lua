@@ -47,22 +47,6 @@ local function GeneralOptions()
 				desc = "Hide messages in languages your character can't read, like Orcish for Alliance or Common for Horde.",
 				disabled = Inactive,
 			},
-			whispers = {
-				type = "toggle",
-				order = 4,
-				width = "full",
-				name = "Filter whispers",
-				desc = "Also hide whispers that match your keywords or repeat themselves.",
-				disabled = Inactive,
-			},
-			verbose = {
-				type = "toggle",
-				order = 5,
-				width = "full",
-				name = "Show notifications",
-				desc = "Print a line in chat when a message is hidden (at most once every 2 seconds).",
-				disabled = Inactive,
-			},
 			repeatHeader = {
 				type = "header",
 				order = 10,

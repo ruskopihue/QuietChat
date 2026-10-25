@@ -77,10 +77,8 @@ class KeywordMatching(unittest.TestCase):
         self.addon.command("toggle")
         self.assertFalse(self.hidden("wts stuff"))
 
-    def test_whispers_only_when_enabled(self):
-        self.assertFalse(self.addon.is_hidden("wts stuff", event="CHAT_MSG_WHISPER"))
-        self.addon.command("whispers")
-        self.assertTrue(self.addon.is_hidden("wts stuff", event="CHAT_MSG_WHISPER"))
+    def test_whispers_are_never_filtered(self):
+        self.assertIsNone(self.addon.g.FILTERS["CHAT_MSG_WHISPER"])
 
 
 class ForeignLanguages(unittest.TestCase):
@@ -110,15 +108,16 @@ class Commands(unittest.TestCase):
     def test_add_rejects_duplicates(self):
         self.assertIn("already a keyword", self.addon.command("add WTS"))
 
-    def test_remove_by_number_and_word(self):
-        self.assertIn("Removed", self.addon.command("remove 1"))
+    def test_remove_by_word(self):
         self.assertIn("Removed", self.addon.command("remove LFW"))
+        self.assertIn("Removed", self.addon.command("remove  wts "))
         self.assertEqual(self.addon.keywords, ["wtb", "recruiting"])
 
-    def test_remove_rejects_bad_input(self):
-        for arg in ["1a", "0", "99", "nope"]:
+    def test_remove_rejects_unknown_words(self):
+        # Numbers are words like any other, not positions in the list
+        for arg in ["1", "nope"]:
             with self.subTest(arg=arg):
-                self.addon.command("remove " + arg)
+                self.assertIn("is not a keyword", self.addon.command("remove " + arg))
         self.assertEqual(len(self.addon.keywords), 4)
 
     def test_reset_restores_defaults(self):
@@ -130,12 +129,6 @@ class Commands(unittest.TestCase):
         self.addon.command("default")
         self.assertEqual(self.addon.keywords, ["wts", "wtb", "recruiting", "lfw"])
 
-    def test_log(self):
-        self.assertIn("empty", self.addon.command("log"))
-        self.addon.is_hidden("wts stuff")
-        self.assertIn("wts stuff", self.addon.command("log 5"))
-        self.assertIn("Usage", self.addon.command("log abc"))
-
     def test_commands_ignore_case(self):
         self.assertIn("disabled", self.addon.command("TOGGLE"))
 
@@ -143,6 +136,22 @@ class Commands(unittest.TestCase):
         output = self.addon.command("")
         self.assertIn("/qc config", output)
         self.assertNotIn("/cf", output)
+
+    def test_removed_settings_are_gone(self):
+        output = self.addon.command("")
+        for removed in ["/qc log", "/qc verbose", "/qc whispers", "number"]:
+            with self.subTest(removed=removed):
+                self.assertNotIn(removed, output)
+
+    def test_old_settings_are_dropped_on_load(self):
+        # Saved settings from before 1.0 load again as if logging in
+        self.addon.lua.execute("""
+            QuietChatDB = { verbose = true, whispers = true, words = { "gold" } }
+            for _, f in ipairs(FRAMES) do f.onEvent(f, "ADDON_LOADED", "QuietChat") end
+        """)
+        self.assertIsNone(self.addon.db.verbose)
+        self.assertIsNone(self.addon.db.whispers)
+        self.assertEqual(self.addon.keywords, ["gold"])
 
 
 if __name__ == "__main__":

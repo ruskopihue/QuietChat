@@ -37,7 +37,7 @@ class SettingsPanel(unittest.TestCase):
     def test_other_options_disabled_when_filter_off(self):
         general = self.options.args.general
         general.set(self.info("active"), False)
-        self.assertTrue(general.args.whispers.disabled(None))
+        self.assertTrue(general.args.blockForeign.disabled(None))
 
     def test_slider_saves_without_forcing_a_redraw(self):
         # A redraw during a drag destroys the slider, so panel changes must not request one

@@ -71,7 +71,7 @@ class RepeatFilter(unittest.TestCase):
     def test_hidden_repeats_are_logged(self):
         self.send(LFM, 0)
         self.send(LFM, 1)
-        self.assertIn("(repeat)", self.addon.command("log"))
+        self.assertIn("(repeat)", self.addon.addon.messageLog[1])
 
 
 if __name__ == "__main__":
