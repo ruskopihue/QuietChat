@@ -150,7 +150,12 @@ local function IsRepeat(player, msg)
 		end
 		lastPrune = now
 	end
-	local key = player .. ":" .. CleanMessage(msg):gsub("[^" .. WORD_CHARS .. "]", "")
+	local text = CleanMessage(msg):gsub("[^" .. WORD_CHARS .. "]", "")
+	-- Only symbols, like ":)" or "?": nothing to compare, or they'd all count as the same message
+	if text == "" then
+		return false
+	end
+	local key = player .. ":" .. text
 	local shown = recentMessages[key]
 	if shown and now - shown < db.repeatWindow then
 		return true

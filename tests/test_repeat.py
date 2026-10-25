@@ -24,6 +24,16 @@ class RepeatFilter(unittest.TestCase):
         self.assertTrue(self.send(LFM.upper() + " !!!", 1))
         self.assertTrue(self.send(LFM.replace(" ", "   "), 2))
 
+    def test_symbol_only_messages_are_never_repeats(self):
+        for at, msg in enumerate([":)", "?", "!!!", ":)", "<3"]):
+            with self.subTest(msg=msg):
+                self.assertFalse(self.send(msg, at))
+
+    def test_symbols_dont_break_the_next_real_repeat(self):
+        self.assertFalse(self.send(":)", 0))
+        self.assertFalse(self.send(LFM, 1))
+        self.assertTrue(self.send(LFM, 2))
+
     def test_changed_numbers_are_a_new_message(self):
         self.assertFalse(self.send(LFM, 0))
         self.assertFalse(self.send(LFM.replace("8/12", "9/12"), 1))
