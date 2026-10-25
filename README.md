@@ -39,12 +39,12 @@ drafted without native speakers, so corrections are welcome; each language is on
 
 ## Installing
 
-1. Download `QuietChat-<version>.zip` from the **Releases** page, not *Source code* or the green
-   *Code* button: those hold the development files, in a folder WoW won't load.
+1. Download `QuietChat-<version>-addon.zip` from the **Releases** page, not *Source code* or the
+   green *Code* button: those hold the development files, in a folder WoW won't load.
 2. Open the zip and drag the `QuietChat` folder inside it into
    `World of Warcraft/Interface/AddOns/`, so you end up with
    `Interface/AddOns/QuietChat/QuietChat.toc`. (Windows' *Extract All* puts it inside an extra
-   `QuietChat-<version>` folder; if it does, move the inner `QuietChat` folder up.)
+   `QuietChat-<version>-addon` folder; if it does, move the inner `QuietChat` folder up.)
 3. Restart the game (a `/reload` doesn't pick up new addons).
 4. Open the settings with `/qc config`.
 

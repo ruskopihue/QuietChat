@@ -1,8 +1,10 @@
 #!/bin/sh
-# Builds the release zip, dist/QuietChat-<version>.zip, with the version from QuietChat.toc.
+# Builds the release zip, dist/QuietChat-<version>-addon.zip, with the version from QuietChat.toc.
 #
 # The zip holds a single QuietChat folder, because the game only loads an addon whose folder
 # name matches its .toc. Inside are the files the game loads, plus the README and license.
+# The -addon suffix keeps it apart from the "Source code" zip GitHub adds to every release,
+# which it names QuietChat-<version>.zip.
 set -eu
 cd "$(dirname "$0")"
 
@@ -16,7 +18,7 @@ mkdir -p "$stage/QuietChat"
 rsync -rt --include='/README.md' --include='/LICENSE' --filter='merge addon-files.filter' \
 	./ "$stage/QuietChat/"
 
-zip="QuietChat-$version.zip"
+zip="QuietChat-$version-addon.zip"
 rm -f "dist/$zip"
 (cd "$stage" && zip -qr "../$zip" QuietChat)
 rm -rf "$stage"
